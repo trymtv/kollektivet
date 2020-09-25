@@ -1,0 +1,39 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block content %}
+{% load tz %}
+{% if endTime %}
+    <h1> Det vaskes! </h1>
+    <br>
+    <img src="{% static "klesvask/vaskemaskin_vasker.gif" %}" alt="Vasker">
+    <h2>Vasken er ferdig: {{ endTime }}</h2>
+{% else %}
+    <h1>Vasken er ferdig!</h1>
+    <img class="mt-10" src="{% static "klesvask/vaskemaskin_ferdig.png" %}" alt="Vask ferdig">
+    <br>
+    <a class="m-10 btn btn-primary" href="{% url 'reg_vask' %}">Registrer en vask!</a>
+{% endif %}
+<br/>
+<h2>Venteliste</h2>
+<form action={% url 'queue' %} method="post">
+    {% csrf_token %}
+    {% if washForm %}{{ washForm.washType }}{% endif %}
+    <input type="submit" class="btn btn-primary mb-2" value="Stå i kø." />
+</form>
+
+{% if washQueue %}
+    <ul class="list-group">
+        {% for queueUser in washQueue %}
+            <li class="list-group-item">{{queueUser}}
+                {% if queueUser.user == user%}
+                <form action={% url 'queue' %} method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary mb-2" value="Forlat kø!" />
+                </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>    
+{% endif %}
+
+{% endblock content %}
