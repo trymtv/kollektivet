@@ -1,5 +1,5 @@
 # kollektivet
-Website to organize houshold activeties.
+Website to organize houshold activities.
 
 Originaly hosted localy on a Raspberry Pi
 
